@@ -13,35 +13,31 @@ function Square (props){
     );
   }
 
-
 class Board extends React.Component {
 
   renderSquare(i) {
+    let myKey=i;
     return <Square
+      key={myKey}
       value={this.props.squares[i]}
       onClick={()=>this.props.onClick(i)}
            />;
   }
 
   render() {
+  	let boardcols = [];
+  	let boardRows = [];
+  	for(let i = 0; i <= 2; i++) {
+      		boardRows = [];
+      		for(let j = i*3+1; j <= i*3+3; j++) {
+      			boardRows.push(this.renderSquare(j-1));
+      		}
+      		boardcols.push(<div key={i} className="board-row">{boardRows}</div>);
+    }
 
     return (
       <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
+        {boardcols}
       </div>
     );
   }
@@ -60,11 +56,9 @@ class Game extends React.Component {
   }
 
   handleClick(i) {
-    const history = this.state.history.slice(0, this.state.stepNumber + 1);
-    console.log(history,this.state.stepNumber+1);
+     const history = this.state.history.slice(0, this.state.stepNumber + 1);
      const current = history[history.length - 1];
      const squares = current.squares.slice();
-
      if (calculateWinner(squares) || squares[i]) {
         return; /*squares[i] is true if is occupied by X or O*/
       }
@@ -76,7 +70,6 @@ class Game extends React.Component {
         stepNumber: history.length,
         xIsNext:!this.state.xIsNext
      });
-     console.log(this.state.history);
 }
 
 jumpTo(step) {
@@ -87,11 +80,9 @@ jumpTo(step) {
   }
 
   render() {
-
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
-
     const moves = history.map((step, move) => {
       const desc = move ?
         'Go to move #' + move :
@@ -102,7 +93,6 @@ jumpTo(step) {
         </li>
       );
     });
-
 
     let status;
     if (winner) {
@@ -143,9 +133,7 @@ const lines = [
 
 for (let i = 0; i < lines.length; i++) {
   const [a, b, c] = lines[i];
-
   if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-
     return squares[a];
   }
 }
