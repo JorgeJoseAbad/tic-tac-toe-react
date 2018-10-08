@@ -110,9 +110,16 @@ jumpTo(step) {
     if (winner) {
       status = 'Winner: ' + winner.winner;
       myWinnerArray=winner.winnerArray;
+    }
+    else if (this.state.stepNumber===9&&winner==null) {
+      alert("No one win!!!");
+      status="No one win!!!!";
     } else {
       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
     }
+
+
+
 
     return (
       <div className="game">
