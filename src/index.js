@@ -4,7 +4,7 @@ import './index.css';
 
 function Square (props){
     return (
-      <button
+      <button style={{color:props.color}}
         className="square"
         onClick={() => props.onClick()}
       >
@@ -15,10 +15,11 @@ function Square (props){
 
 class Board extends React.Component {
 
-  renderSquare(i) {
+  renderSquare(i,color) {
     let myKey=i;
     return <Square
       key={myKey}
+      color={color}
       value={this.props.squares[i]}
       onClick={()=>this.props.onClick(i)}
            />;
@@ -27,10 +28,19 @@ class Board extends React.Component {
   render() {
   	let boardcols = [];
   	let boardRows = [];
+
   	for(let i = 0; i <= 2; i++) {
       		boardRows = [];
       		for(let j = i*3+1; j <= i*3+3; j++) {
-      			boardRows.push(this.renderSquare(j-1));
+      			//boardRows.push(this.renderSquare(j-1)); original
+            if (this.props.winnerArray){
+               if (this.props.winnerArray[0][0]===j-1 ||
+                   this.props.winnerArray[0][1]===j-1 ||
+                   this.props.winnerArray[0][2]===j-1) {boardRows.push(this.renderSquare(j-1,'red'))}
+               else boardRows.push(this.renderSquare(j-1,'black'))
+             }
+            else boardRows.push(this.renderSquare(j-1,'black'))
+
       		}
       		boardcols.push(<div key={i} className="board-row">{boardRows}</div>);
     }
@@ -83,6 +93,8 @@ jumpTo(step) {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
+    let myWinnerArray=null; //to send array winner
+
     const moves = history.map((step, move) => {
       const desc = move ?
         'Go to move #' + move :
@@ -96,7 +108,8 @@ jumpTo(step) {
 
     let status;
     if (winner) {
-      status = 'Winner: ' + winner;
+      status = 'Winner: ' + winner.winner;
+      myWinnerArray=winner.winnerArray;
     } else {
       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
     }
@@ -105,6 +118,7 @@ jumpTo(step) {
       <div className="game">
         <div className="game-board">
           <Board
+            winnerArray={myWinnerArray}
             squares={current.squares}
             onClick={(i) => this.handleClick(i)}
           />
@@ -131,10 +145,16 @@ const lines = [
   [2, 4, 6],
 ];
 
+let winnerPack={
+  winner:'',
+  winnerArray:[]
+}
 for (let i = 0; i < lines.length; i++) {
   const [a, b, c] = lines[i];
   if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-    return squares[a];
+    winnerPack.winnerArray.push([a,b,c]);
+    winnerPack.winner=squares[a];
+    return winnerPack;
   }
 }
 return null;
