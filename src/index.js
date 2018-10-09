@@ -40,7 +40,6 @@ class Board extends React.Component {
                else boardRows.push(this.renderSquare(j-1,'black'))
              }
             else boardRows.push(this.renderSquare(j-1,'black'))
-
       		}
       		boardcols.push(<div key={i} className="board-row">{boardRows}</div>);
     }
@@ -117,9 +116,6 @@ jumpTo(step) {
     } else {
       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
     }
-
-
-
 
     return (
       <div className="game">
