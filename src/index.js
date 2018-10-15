@@ -2,6 +2,42 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+const Intro = () =>{
+  return(
+    <div>
+      <h1>Tic-Tac-Toe</h1>
+      <b>
+        <i>A tutorial game from </i>
+        <a href="https://reactjs.org/tutorial/tutorial.html"
+        target="_blank">React.js</a>
+        <i> completed by </i>
+        <a href="https://github.com/JorgeJoseAbad"
+        target="_blank">Jorge Abad</a>
+      </b>
+      <p>Completed with five sugested improvements</p>
+      <ol>
+        <li>Display the location for each move in the format (col, row)
+          in the move history list.
+        </li>
+        <li>Bold the currently selected item in the move list.</li>
+        <li>Rewrite Board to use two loops to make the squares instead of
+          hardcoding them.
+        </li>
+        <li>When someone wins, highlight the three squares that caused the win.
+        </li>
+        <li>When no one wins, display a message about the
+        result being a draw.</li>
+      </ol>
+      <h5>Of course, this is a directed tutorial...</h5>
+      <div>But it is representative of many aspects of React that must
+      be handled. No CSS added.</div>
+      <br></br>
+
+    </div>
+  )
+}
+
+
 function Square (props){
     return (
       <button style={{color:props.color}}
@@ -36,7 +72,8 @@ class Board extends React.Component {
             if (this.props.winnerArray){
                if (this.props.winnerArray[0][0]===j-1 ||
                    this.props.winnerArray[0][1]===j-1 ||
-                   this.props.winnerArray[0][2]===j-1) {boardRows.push(this.renderSquare(j-1,'red'))}
+                   this.props.winnerArray[0][2]===j-1) {
+                     boardRows.push(this.renderSquare(j-1,'red'))}
                else boardRows.push(this.renderSquare(j-1,'black'))
              }
             else boardRows.push(this.renderSquare(j-1,'black'))
@@ -126,17 +163,20 @@ jumpTo(step) {
     }
 
     return (
-      <div className="game">
-        <div className="game-board">
-          <Board
-            winnerArray={myWinnerArray}
-            squares={current.squares}
-            onClick={(i) => this.handleClick(i)}
-          />
-        </div>
-        <div className="game-info">
-          <div>{status}</div>
-          <ol>{moves}</ol>
+      <div>
+        <Intro />
+        <div className="game">
+          <div className="game-board">
+            <Board
+              winnerArray={myWinnerArray}
+              squares={current.squares}
+              onClick={(i) => this.handleClick(i)}
+            />
+          </div>
+          <div className="game-info">
+            <div>{status}</div>
+            <ol>{moves}</ol>
+          </div>
         </div>
       </div>
     );
