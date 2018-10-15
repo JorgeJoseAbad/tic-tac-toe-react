@@ -99,8 +99,11 @@ jumpTo(step) {
     let myWinnerArray=null; //to send array winner
 
     const moves = history.map((step, move) => {
+      let n=step.col+3*step.row;
       const desc = move ?
-        `Go to move # ${move}; col: ${step.col}; row: ${step.row}`
+        `Go to move #  ${move} ;
+        col: ${step.col}; row: ${step.row};
+        element selected: ${step.squares[n]}`
         :
         'Go to game start';
       return (
